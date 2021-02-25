@@ -24,7 +24,11 @@ from accounts.models import UserProfile
 @api_view(['POST'])
 def user_profile(request):
     serializer = UserProfileSerializer(request.user, many=False)
-    return Response(serializer.data)
+
+    email_address = EmailAddress.objects.get(email=request.user.email)
+    if email_address.verified:
+        return Response({'verified': True, 'profile': serializer.data})
+    return Response({'verified': False, 'profile': serializer.data})
 
 
 @csrf_exempt
@@ -116,10 +120,10 @@ def email_confirmation(request):
     email_address = EmailAddress.objects.get(email=request.user.email)
 
     if email_address.verified:
-        return Response({'message': 'Email already verified'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Email already verified'})
 
     send_email_confirmation(request, request.user)
-    return Response({'message': 'Email confirmation resent'}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Email confirmation resent'})
 
 
 class UpdateEmail(APIView):
@@ -135,7 +139,7 @@ class UpdateEmail(APIView):
             serializer.save()
 
         send_email_confirmation(request, request.user)
-        return Response({'message': 'Email confirmation sent'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Email confirmation sent'})
 
 
 class ProfileUpdate(APIView):
