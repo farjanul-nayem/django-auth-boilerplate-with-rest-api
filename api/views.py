@@ -23,12 +23,13 @@ from accounts.models import UserProfile
 @csrf_exempt
 @api_view(['POST'])
 def user_profile(request):
+    verified = False
     serializer = UserProfileSerializer(request.user, many=False)
 
     email_address = EmailAddress.objects.get(email=request.user.email)
     if email_address.verified:
-        return Response({'verified': True, 'profile': serializer.data})
-    return Response({'verified': False, 'profile': serializer.data})
+        verified = True
+    return Response({'verified': verified, 'profile': serializer.data})
 
 
 @csrf_exempt
