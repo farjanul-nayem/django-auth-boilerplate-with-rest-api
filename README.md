@@ -1,1 +1,1 @@
-# django-auth-boilerplate-with-rest-api
+# Django Auth Boilerplate with REST API
