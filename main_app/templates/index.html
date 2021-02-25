@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+    {% if user.is_authenticated %}
+        <p>Welcome, <strong>{{ user.get_full_name }}</strong>. Thanks for logging in.</p>
+        <p>If you want <a href="{% url 'account_logout' %}">logout</a> or <a href="{% url 'account_change_password' %}">password change</a></p>
+        <p>See your <a href="{% url 'account_email' %}">email</a></p>
+    {% else %}
+        <p>Welcome, guest user. Please
+            <a href="{% url 'account_login' %}">log in</a>
+            or <a href="{% url 'account_signup' %}">sign up</a>
+            or <a href="{% url 'account_reset_password' %}">forgot password</a>
+        </p>
+    {% endif %}
+</body>
+</html>

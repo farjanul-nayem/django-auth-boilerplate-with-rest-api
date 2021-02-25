@@ -1,0 +1,56 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col col-lg-5">
+
+    <h1>Sign In</h1>
+    <p>If you have not created an account yet, then please <a href="{% url 'account_signup' %}">sign up</a> first.</p>
+
+      <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+    <!--    {{ form.as_p }}-->
+        <div class="form-group">
+            <label for="login">Email</label>
+            <input type="email" id="login" name="login" class="form-control" placeholder="email@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="*******">
+        </div>
+        <ul class="list-inline">
+            <li class="list-inline-item">
+                <input id="reg" class="checkbox-custom" name="reg" type="checkbox">
+                <label for="reg" class="checkbox-custom-label">Remember Me</label>
+            </li>
+            <li class="list-inline-item">
+                <a href="{% url 'account_reset_password' %}" class="theme-cl">Forget Password?</a>
+            </li>
+        </ul>
+
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <button class="btn btn-dark" type="submit">Sign In</button>
+      </form>
+  </div>
+</div>
+{% endblock %}

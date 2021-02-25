@@ -1,0 +1,65 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}Signup{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col col-lg-5">
+    <h1>Sign Up</h1>
+
+    <p>Already have an account? Then please <a href="{% url 'account_login' %}">sign in</a>.</p>
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+  <!--    {{ form.as_p }}-->
+
+      <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input name="first_name" id="first_name" type="text" value="{{ first_name }}" class="form-control" placeholder="First Name">
+      </div>
+
+      <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input name="last_name" id="last_name" type="text" value="{{ last_name }}" class="form-control" placeholder="Last Name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input name="email" id="email" type="email" value="{{ email }}" class="form-control" placeholder="email@example.com">
+      </div>
+
+      <div class="form-group">
+          <label for="password1">Password</label>
+          <input name="password1" id="password1" type="password" class="form-control" placeholder="Password">
+      </div>
+
+      <div class="form-group">
+          <label for="password2">Password Confirm</label>
+          <input name="password2" id="password2" type="password" class="form-control" placeholder="Password Confirm">
+      </div>
+
+      {% for field in form %}
+          {% for error in field.errors %}
+              <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+      {% endfor %}
+
+      {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+          </div>
+      {% endfor %}
+
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-dark">Sign Up</button>
+      </div>
+    </form>
+    </div>
+</div>
+{% endblock %}
