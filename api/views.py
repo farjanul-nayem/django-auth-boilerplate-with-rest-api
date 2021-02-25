@@ -67,10 +67,11 @@ def refresh_token(request):
 @csrf_exempt
 @api_view(['POST'])
 def revoke_token(request):
+    token = AccessToken.objects.filter(user=request.user)
     response = requests.post(
         'http://0.0.0.0:8000/o/revoke_token/',
         data={
-            'token': request.data['token'],
+            'token': token,
             'client_id': request.META.get('HTTP_CLIENT_ID'),
             'client_secret': request.META.get('HTTP_CLIENT_SECRET'),
         },
